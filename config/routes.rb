@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+        registrations: 'users/registrations',
+        sessions: 'users/sessions'
+      }
+  resources :songs
+  resources :genres
+
+  resources :users, only: [:index] do
+    resources :user_songs do
+      # member do
+      #   get 'levelup'
+      #   get 'change'
+      # end
+    end
+  end
+
+  root 'songs#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
