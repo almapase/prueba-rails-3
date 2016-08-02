@@ -1,10 +1,10 @@
-<p id="notice"><%= notice %></p>
+<h1>Listing User Songs of: <%= @user.name %></h1>
 
-<h1>Listing User Songs</h1>
-
-<table>
+<table class="table">
   <thead>
     <tr>
+      <th>Name</th>
+      <th>Genre</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -12,9 +12,11 @@
   <tbody>
     <% @user_songs.each do |user_song| %>
       <tr>
-        <td><%= link_to 'Show', user_song %></td>
-        <td><%= link_to 'Edit', edit_user_song_path(user_song) %></td>
-        <td><%= link_to 'Destroy', user_song, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= user_song.song.name %></td>
+        <td><%= user_song.song.genre.name %></td>
+        <td><%= link_to 'Show', user_user_song_path(user_song.user, user_song.song) %></td>
+        <td><%= link_to 'Edit', edit_user_user_song_path(user_song.user, user_song.song) %></td>
+        <td><%= link_to 'Destroy', user_user_song_path(user_song.user, user_song.song), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -22,4 +24,4 @@
 
 <br>
 
-<%= link_to 'New User song', new_user_song_path %>
+<%= link_to 'New User song', new_user_user_song_path %>

@@ -1,10 +1,12 @@
 class UserSongsController < ApplicationController
   before_action :set_user_song, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
 
   # GET /user_songs
   # GET /user_songs.json
   def index
-    @user_songs = UserSong.all
+    @user = User.find(params[:user_id])
+    @user_songs = UserSong.where(user: @user)
   end
 
   # GET /user_songs/1
@@ -25,10 +27,11 @@ class UserSongsController < ApplicationController
   # POST /user_songs.json
   def create
     @user_song = UserSong.new(user_song_params)
+    @user_song.position = UserSong.where(user: current_user).size + 1
 
     respond_to do |format|
       if @user_song.save
-        format.html { redirect_to @user_song, notice: 'User song was successfully created.' }
+        format.html { redirect_to songs_path, notice: 'User song was successfully created.' }
         format.json { render :show, status: :created, location: @user_song }
       else
         format.html { render :new }
@@ -69,6 +72,6 @@ class UserSongsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_song_params
-      params.fetch(:user_song, {})
+      params.fetch(:user_song, {}).permit(:user_id, :song_id, :position)
     end
 end

@@ -1,13 +1,30 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Listing Songs</h1>
+<div class="row">
+  <%= form_tag songs_path, method: :get, class: "navbar-form navbar-left search-form" do %>
+    <div class="form-group">
+      <div class="col-sm-6 control-label">
+        <%= label_tag "Filter by Genre" %>
+      </div>
+      <div class="col-sm-6">
+        <%= select_tag(
+            :search,
+            options_for_select(Genre.all.map{|g| [g.name, g.id]}),
+            class:"form-control"
+        ) %>
+      </div>
+    </div>
 
-<table>
+
+  <% end %>
+</div>
+
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
       <th>Duration</th>
       <th>Genre</th>
+      <th>Add to my PlayList</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,7 +34,17 @@
       <tr>
         <td><%= song.name %></td>
         <td><%= song.duration %></td>
-        <td><%= song.genre %></td>
+        <td><%= song.genre.try(:name) %></td>
+        <td>
+          <%= form_for [current_user, UserSong.new] do |f| %>
+            <div class="input-group">
+              <span class="input-group-btn">
+                <%= f.submit("<<", class: "btn btn-default") %>
+              </span>
+              <%= f.hidden_field(:song_id, value: song.id) %>
+            </div>
+          <% end %>
+        </td>
         <td><%= link_to 'Show', song %></td>
         <td><%= link_to 'Edit', edit_song_path(song) %></td>
         <td><%= link_to 'Destroy', song, method: :delete, data: { confirm: 'Are you sure?' } %></td>

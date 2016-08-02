@@ -1,0 +1,12 @@
+<h1>List of Members</h1>
+<% @users.each do |user| %>
+  <div class=" col-md-3 panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><%= user.name %></h3>
+    </div>
+    <div class="panel-body">
+      <p>Mail: <%= user.email %></p>
+      <p><%= link_to 'Play list', user_user_songs_path(user) %></p>
+    </div>
+  </div>
+<% end %>
